@@ -1,9 +1,7 @@
 import { Inter } from "next/font/google";
 import Head from "next/head";
-import Navbar from "../components/Navbar.js";
-import Carousel from "../components/Carousel.js";
-import Category from "../components/Category.js";
-import Footer from "../components/Footer.js";
+import Category from "../components/category.js";
+import Carousel from "../components/carousel.js";
 import { initFlowbite } from "flowbite";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -17,18 +15,11 @@ export default function Home() {
           name="description"
           content="Thriftie - Feel Trendy. Feel Authentic."
         />
-        <link
-          rel="shortcut icon"
-          href="/logo.png"
-          type="image/x-icon"
-        />
-        
+        <link rel="shortcut icon" href="/logo.png" type="image/x-icon" />
       </Head>
 
-      <Navbar />
-      <Carousel/>
-      <Category/>
-      <Footer />
+      <Carousel />
+      <Category />
     </div>
   );
 }
