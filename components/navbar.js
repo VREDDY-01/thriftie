@@ -1,19 +1,9 @@
 import Link from "next/link";
 import React from "react";
-import { useRef } from "react";
 import { AiOutlineShoppingCart, AiFillCloseCircle,AiFillPlusCircle,AiFillMinusCircle } from "react-icons/ai";
 
 const Navbar = () => {
-  const ref = useRef();
-  const toggleCart = () => {
-    if (ref.current.classList.contains("translate-x-full")) {
-      ref.current.classList.remove("translate-x-full");
-      ref.current.classList.add("translate-x-0");
-    } else {
-      ref.current.classList.remove("translate-x-0");
-      ref.current.classList.add("translate-x-full");
-    }
-  };
+
   return (
     <div>
       <nav className="bg-white dark:bg-gray-900 w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600 shadow-md">
@@ -31,9 +21,9 @@ const Navbar = () => {
             >
               Get started
             </button>
-            <button onClick={toggleCart}>
+            <Link href={"/checkout"}>
               <AiOutlineShoppingCart className="text-3xl md:mx-4" />
-            </button>
+            </Link>
 
             <button
               data-collapse-toggle="navbar-sticky"
