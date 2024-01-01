@@ -1,13 +1,10 @@
 import Link from "next/link";
-import React from "react";
-import {
-  AiOutlineShoppingCart,
-  AiFillCloseCircle,
-  AiFillPlusCircle,
-  AiFillMinusCircle,
-} from "react-icons/ai";
+import React, { useState } from "react";
+import { AiOutlineShoppingCart } from "react-icons/ai";
+import { FaUserCircle } from "react-icons/fa";
 
 const Navbar = ({ cart }) => {
+  const [isLogin, setIsLogin] = useState(false);
   return (
     <div className="sticky top-0 z-20">
       <nav className="bg-white dark:bg-gray-900 w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600 shadow-md">
@@ -19,22 +16,27 @@ const Navbar = ({ cart }) => {
             <img src="/logo.png" className="h-10" alt="Flowbite Logo" />
           </Link>
           <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-            <button
-              type="button"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Get started
-            </button>
-              <Link href={"/checkout"}>
-            <div className="shrink-0  relative">
-              {Object.keys(cart).length>0 && <span className="absolute bg-orange-600 md:top-0 md:left-9 left-5 lg:left-9 flex h-4 w-4 items-center justify-center rounded-full border text-sm font-medium text-white shadow sm:top-0">
-                {Object.keys(cart).length}
-              </span>}
-              <AiOutlineShoppingCart className="text-3xl md:mx-4" />
-            </div>
+            {!isLogin && (
+              <Link
+                href={"/login"}
+                type="button"
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Login
+              </Link>
+            )}
+            {isLogin && <FaUserCircle className="text-3xl" />}
+            <Link href={"/checkout"}>
+              <div className="shrink-0  relative">
+                {Object.keys(cart).length > 0 && (
+                  <span className="absolute bg-orange-600 md:top-0 md:left-9 left-5 lg:left-9 flex h-4 w-4 items-center justify-center rounded-full border text-sm font-medium text-white shadow sm:top-0">
+                    {Object.keys(cart).length}
+                  </span>
+                )}
+                <AiOutlineShoppingCart className="text-3xl md:mx-4" />
+              </div>
             </Link>
 
-            
             <button
               data-collapse-toggle="navbar-sticky"
               type="button"
