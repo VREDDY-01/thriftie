@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 const Category = () => {
   return (
@@ -6,11 +7,11 @@ const Category = () => {
       <section className="text-gray-600 body-font">
         <div className="container px-10 py-10 md:px-20 md:py-24 mx-auto">
           <div className="flex flex-wrap -m-4">
-            <div className="p-4 md:w-1/4 lg:w-1/5 w-1/2">
+            <Link href={"/tshirts"} className="p-4 md:w-1/4 lg:w-1/5 w-1/2">
               <div className="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
                 <img
                   className="lg:h-48 md:h-36 w-full object-cover object-center"
-                  src="https://dummyimage.com/500x500"
+                  src="https://www.mydesignation.com/wp-content/uploads/2019/08/malayali-tshirt-mydesignation-mockup-image-latest-golden-.jpg"
                   alt="blog"
                 />
                 <div className="p-1 text-center">
@@ -19,7 +20,7 @@ const Category = () => {
                   </h1>
                 </div>
               </div>
-            </div>
+            </Link>
             <div className="p-4 md:w-1/4 lg:w-1/5 w-1/2">
               <div className="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
                 <img

@@ -1,11 +1,15 @@
 import Link from "next/link";
 import React from "react";
-import { AiOutlineShoppingCart, AiFillCloseCircle,AiFillPlusCircle,AiFillMinusCircle } from "react-icons/ai";
+import {
+  AiOutlineShoppingCart,
+  AiFillCloseCircle,
+  AiFillPlusCircle,
+  AiFillMinusCircle,
+} from "react-icons/ai";
 
-const Navbar = () => {
-
+const Navbar = ({ cart }) => {
   return (
-    <div>
+    <div className="sticky top-0 z-20">
       <nav className="bg-white dark:bg-gray-900 w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600 shadow-md">
         <div className="max-w-screen-2xl flex flex-wrap items-center justify-between mx-auto p-4">
           <Link
@@ -21,10 +25,16 @@ const Navbar = () => {
             >
               Get started
             </button>
-            <Link href={"/checkout"}>
+              <Link href={"/checkout"}>
+            <div className="shrink-0  relative">
+              {Object.keys(cart).length>0 && <span className="absolute bg-orange-600 md:top-0 md:left-9 left-5 lg:left-9 flex h-4 w-4 items-center justify-center rounded-full border text-sm font-medium text-white shadow sm:top-0">
+                {Object.keys(cart).length}
+              </span>}
               <AiOutlineShoppingCart className="text-3xl md:mx-4" />
+            </div>
             </Link>
 
+            
             <button
               data-collapse-toggle="navbar-sticky"
               type="button"

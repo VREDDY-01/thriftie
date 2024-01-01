@@ -5,7 +5,7 @@ const Tshirts = () => {
   return (
     <div><section className="md:text-gray-600 body-font">
     <div className="container py-14 px-20 md:px-20 lg:px- md:py-24 mx-auto">
-      <div className="flex flex-wrap -m-4">
+      <div className="flex flex-wrap -m-4 justify-center">
         <div className="lg:w-1/3 xl:w-1/4 md:w-1/2 p-4 cursor-pointer w-full hover:scale-105 md:text-left text-center">
           <Link href={"/product/marathi"} className="block relative rounded overflow-hidden">
             <img alt="ecommerce" className="h-[30vh] sm:h-[60vh] md:h-[20vh] lg:h-[36vh] block md:m-0 m-auto" src="https://www.mydesignation.com/wp-content/uploads/2019/08/malayali-tshirt-mydesignation-mockup-image-latest-golden-.jpg"/>
