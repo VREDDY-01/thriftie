@@ -2,11 +2,16 @@ import "@/styles/globals.css";
 import Navbar from "../components/navbar.js";
 import Footer from "../components/footer.js";
 import { useEffect, useState } from "react";
+import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/router.js";
 
 export default function App({ Component, pageProps }) {
+  const router = useRouter();
   const [cart, setCart] = useState({});
   const [subTotal, setSubTotal] = useState(0);
   const [charges, setCharges] = useState(0);
+  const [user, setUser] = useState(null);
+  const [key, setKey] = useState(null);
 
   useEffect(() => {
     try {
@@ -20,36 +25,40 @@ export default function App({ Component, pageProps }) {
     }
   }, []);
 
-  const addToCart = (itemCode, qty, price, name, size, variant) => {
+  useEffect(()=>{
+    const token = localStorage.getItem("token");
+    if (token) {
+      setUser({value:token})
+      setKey(Math.random())
+    }
+  },[router.query])
+
+  const addToCart = (itemCode, qty, price, name, size, variant,img) => {
     let myCart = cart;
     if (itemCode in cart) {
       myCart[itemCode].qty = cart[itemCode].qty + qty;
     } else {
-      myCart[itemCode] = { qty: 1, price, name, size, variant };
+      myCart[itemCode] = { qty: 1, price, name, size, variant,img };
     }
     setCart(myCart);
     saveCart(myCart);
     setCharges(60);
   };
+
   const removeFromCart = (itemCode, qty) => {
-    let myCart = JSON.parse(JSON.stringify(cart));
+    let newCart = cart;
+
     if (itemCode in cart) {
-      myCart[itemCode].qty = cart[itemCode].qty - qty;
+      newCart[itemCode].qty = cart[itemCode].qty - qty;
     }
-    if (myCart[itemCode].qty <= 0) {
-      delete myCart[itemCode];
+    if (newCart[itemCode].qty <= 0) {
+      delete newCart[itemCode];
     }
-    setCart(myCart);
-    if(Object.keys(myCart)>0){
-      saveCart(myCart);
-    }else{
-      clearCart();
-    }
+    setCart(newCart);
+
+    saveCart(newCart);
   };
 
-  const clearCart = ()=>{
-    localStorage.removeItem("cart");
-  }
 
   const saveCart = (newCart) => {
     localStorage.setItem("cart", JSON.stringify(newCart));
@@ -63,10 +72,17 @@ export default function App({ Component, pageProps }) {
     localStorage.setItem("subt",subt);
     setSubTotal(subt);
   };
+
+  const logout = ()=>{
+    if (localStorage.getItem("token")) {
+      localStorage.removeItem("token")
+      setKey(Math.random())
+    }
+  }
   
   return (
     <>
-      <Navbar cart={cart} />
+      <Navbar logout={logout} key={key} user={user} cart={cart} />
       <Component
         cart={cart}
         addToCart={addToCart}

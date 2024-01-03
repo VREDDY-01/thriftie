@@ -7,6 +7,7 @@ module.exports = {
     "./node_modules/flowbite/**/*.js",
   ],
   theme: {
+    
     extend: {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
@@ -14,8 +15,12 @@ module.exports = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       height:{
-        150:"40rem"
-      }
+        140:"40rem",
+        150:"50rem"
+      },
+      screens:{
+        'smx': { 'raw': '(max-width: 765px)' },
+      },
     },
   },
   plugins: [

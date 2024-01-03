@@ -3,22 +3,44 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import Product from "@/models/Product";
 import mongoose from "mongoose";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Slug = ({ addToCart, product, variants }) => {
   const router = useRouter();
-  const { slug } = router.query;
+  const slug = router.query;
   const [size, setSize] = useState();
   const [color, setColor] = useState();
   const [pin, setPin] = useState();
-  const [service, setService] = useState();
+  const [service, setService] = useState(null);
 
   const checkServicebility = async () => {
     let pins = await fetch("http://localhost:3000/api/pincode");
     let pinjson = await pins.json();
     if (pinjson.includes(parseInt(pin))) {
       setService(true);
+      toast.success('Your Pincode is Serviceble', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
     } else {
       setService(false);
+      toast.error('Sorry,your pincode is not serviceble', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
     }
   };
 
@@ -42,12 +64,24 @@ const Slug = ({ addToCart, product, variants }) => {
   return (
     <div>
       <section className="text-gray-600 body-font overflow-hidden">
+        <ToastContainer
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
         <div className="container px-5 py-16 mx-auto">
           <div className="lg:w-4/5 mx-auto flex flex-wrap">
             <img
               alt="ecommerce"
               className="lg:w-1/2 w-full lg:h-auto lg:px-0 md:px-24 object-cover object-top rounded"
-              src="https://www.mydesignation.com/wp-content/uploads/2019/08/malayali-tshirt-mydesignation-mockup-image-latest-golden-.jpg"
+              src={product.img}
             />
             <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
               <h2 className="text-sm title-font text-gray-500 tracking-widest">
@@ -66,16 +100,14 @@ const Slug = ({ addToCart, product, variants }) => {
                   {Object.keys(variants).map((item, index) => {
                     return (
                       Object.keys(variants[item]).includes(size) && (
-                        <button
-                          onClick={() => {
-                            refreshVariant(item, size);
-                          }}
+                        <Link
+                          href={`/product/${variants[item][size]["slug"]}`}
                           key={index}
                           className={`border-2 colorbutton ml-1 rounded-full w-6 h-6 focus:outline-none ${
                             color === item ? "border-black" : "border-gray-300"
                           }`}
                           style={{ backgroundColor: item }}
-                        ></button>
+                        ></Link>
                       )
                     );
                   })}
@@ -116,22 +148,38 @@ const Slug = ({ addToCart, product, variants }) => {
               </div>
               <div className="flex">
                 <span className="title-font font-medium text-2xl text-gray-900">
-                  ₹499
+                  ₹{product.price}
                 </span>
                 <button
                   onClick={() =>
-                    addToCart(1, 1, 499, "Marathi-aka mullas", "XL", "Blue")
+                    addToCart(
+                      slug.slug,
+                      1,
+                      product.price,
+                      product.title,
+                      size,
+                      color,
+                      product.img
+                    )
                   }
-                  className="flex ml-4 text-white bg-indigo-500 border-0 py-2 md:px-6 px-2 focus:outline-none hover:bg-indigo-600 rounded"
+                  className="flex ml-4 text-white bg-orange-500 border-0 py-2 md:px-6 px-2 focus:outline-none hover:bg-orange-600 rounded"
                 >
                   ADD TO BAG
                 </button>
                 <Link
                   href={"/checkout"}
                   onClick={() =>
-                    addToCart(1, 1, 499, "Marathi-aka mullas", "XL", "Blue")
+                    addToCart(
+                      slug.slug,
+                      1,
+                      product.price,
+                      product.title,
+                      size,
+                      color,
+                      product.img
+                    )
                   }
-                  className="flex ml-4 text-white bg-indigo-500 border-0 py-2 md:px-6 px-2 focus:outline-none hover:bg-indigo-600 rounded"
+                  className="flex ml-4 text-white bg-orange-500 border-0 py-2 md:px-6 px-2 focus:outline-none hover:bg-orange-600 rounded"
                 >
                   BUY NOW
                 </Link>
@@ -158,7 +206,7 @@ const Slug = ({ addToCart, product, variants }) => {
                   id="pincode"
                 />
                 <button
-                  className=" text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
+                  className=" text-white bg-orange-500 border-0 py-2 px-6 focus:outline-none hover:bg-orange-600 rounded"
                   onClick={checkServicebility}
                 >
                   Check

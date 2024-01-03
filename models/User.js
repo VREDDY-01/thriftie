@@ -19,7 +19,7 @@ const userSchema = mongoose.Schema(
             type: String
         },
         contactNumber:{
-            type:Number
+            type:String
         },
         dob:{
             type:String

@@ -34,7 +34,7 @@ const Checkout = ({
                           </span>
                           <img
                             className="h-24 w-24 max-w-full rounded-lg object-cover"
-                            src="https://images.unsplash.com/photo-1588484628369-dd7a85bfdc38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTh8fHNuZWFrZXJ8ZW58MHx8MHx8&auto=format&fit=crop&w=150&q=60"
+                            src={cart[k].img}
                             alt=""
                           />
                         </div>

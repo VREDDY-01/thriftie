@@ -3,7 +3,7 @@ import React from "react";
 import mongoose from "mongoose";
 import Product from "@/models/Product";
 
-const Tshirts = ({ products }) => {
+const Bottoms = ({ products }) => {
   return (
     <div>
       <section className="md:text-gray-600 body-font">
@@ -44,27 +44,27 @@ export async function getServerSideProps(context) {
   if (!mongoose.connections[0].readyState) {
     await mongoose.connect(process.env.MONGO_URI);
   }
-  const products = await Product.find({category:"TSHIRT"});
-  let tshirts = {};
+  const products = await Product.find({category:"BOTTOM"});
+  let Bottoms = {};
     for(let item of products){
-        if(item.title in tshirts){
-            if(!tshirts[item.title].color.includes(item.color) && item.availableQty>0){
-                tshirts[item.title].color.push(item.color);
+        if(item.title in Bottoms){
+            if(!Bottoms[item.title].color.includes(item.color) && item.availableQty>0){
+                Bottoms[item.title].color.push(item.color);
             }
-            if(!tshirts[item.title].size.includes(item.size) && item.availableQty>0){
-                tshirts[item.title].size.push(item.size);
+            if(!Bottoms[item.title].size.includes(item.size) && item.availableQty>0){
+                Bottoms[item.title].size.push(item.size);
             }
             
         }else{
-            tshirts[item.title] = JSON.parse(JSON.stringify(item));
+            Bottoms[item.title] = JSON.parse(JSON.stringify(item));
             if(item.availableQty>0){
-                tshirts[item.title].color = [item.color];
-                tshirts[item.title].size = [item.size];
+                Bottoms[item.title].color = [item.color];
+                Bottoms[item.title].size = [item.size];
             }
         }
     }
   return {
-    props: { products:JSON.parse(JSON.stringify(tshirts)) },
+    props: { products:JSON.parse(JSON.stringify(Bottoms)) },
   };
 }
-export default Tshirts;
+export default Bottoms;

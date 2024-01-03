@@ -5,7 +5,8 @@ import User from "@/models/User";
 const handler = async (req, res) => {
     if (req.method == 'POST') {
         try{
-            const {name,email,password,contactNumber,dob,avatar} = req.body;
+            console.log(req.body);
+            const {name,email,password,contactNumber} = req.body;
             const errors = {emailError:String};
             const existingusermail = await User.findOne({email});
             const existingusernum = await User.findOne({contactNumber});
@@ -34,8 +35,6 @@ const handler = async (req, res) => {
                 email,
                 password:hashedPass,
                 contactNumber,
-                dob,
-                avatar,
                 verified
             });
             await newuser.save();
