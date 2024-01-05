@@ -10,7 +10,6 @@ export default function App({ Component, pageProps }) {
   const [cart, setCart] = useState({});
   const [subTotal, setSubTotal] = useState(0);
   const [charges, setCharges] = useState(0);
-  const [user, setUser] = useState(null);
   const [key, setKey] = useState(null);
 
   useEffect(() => {
@@ -28,7 +27,6 @@ export default function App({ Component, pageProps }) {
   useEffect(()=>{
     const token = localStorage.getItem("token");
     if (token) {
-      setUser({value:token})
       setKey(Math.random())
     }
   },[router.query])
@@ -77,12 +75,13 @@ export default function App({ Component, pageProps }) {
     if (localStorage.getItem("token")) {
       localStorage.removeItem("token")
       setKey(Math.random())
+      router.push("/");
     }
   }
   
   return (
     <>
-      <Navbar logout={logout} key={key} user={user} cart={cart} />
+      <Navbar logout={logout} key={key} cart={cart} />
       <Component
         cart={cart}
         addToCart={addToCart}

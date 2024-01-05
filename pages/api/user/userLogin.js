@@ -24,7 +24,7 @@ const handler = async (req, res) => {
         const token = jwt.sign({
             email,
             id:existinguser._id
-        },process.env.JWT_SECRET,{expiresIn:"1h"});
+        },process.env.NEXT_PUBLIC_JWT_SECRET,{expiresIn:"1h"});
         res.status(200).json({result:existinguser,usertoken:token})
     } catch (error) {
         console.log(error);

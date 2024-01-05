@@ -1,6 +1,7 @@
 import connectDb from "@/middleware/mongoose";
 import bcrypt from "bcrypt";
 import User from "@/models/User";
+import jwt from "jsonwebtoken";
 
 const handler = async (req, res) => {
     if (req.method == 'POST') {
@@ -38,10 +39,15 @@ const handler = async (req, res) => {
                 verified
             });
             await newuser.save();
+            const token = jwt.sign({
+                email,
+                id:newuser.email
+            },process.env.NEXT_PUBLIC_JWT_SECRET,{expiresIn:"1h"});
             return res.status(201).json({
                 success:true,
                 message:"user Created Succefully",
-                response: newuser
+                response: newuser,
+                usertoken:token
             });
         }catch(error){
             const errors = {backendError:String};

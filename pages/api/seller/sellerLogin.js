@@ -26,7 +26,7 @@ const handler = async (req, res) => {
           email,
           id: existingSeller._id,
         },
-        process.env.JWT_SECRET,
+        process.env.NEXT_PUBLIC_JWT_SECRET,
         { expiresIn: "1h" }
       );
       res.status(200).json({ result: existingSeller, sellertoken: token });

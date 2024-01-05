@@ -3,10 +3,12 @@ import React, { useEffect, useState } from "react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import Dropdown from "./dropdown";
 import jwt from "jsonwebtoken";
+import { useRouter } from "next/router";
 
 const Navbar = ({ cart,key,logout }) => {
   const [isLogin, setIsLogin] = useState(false);
   const [menu, setmenu] = useState("hidden");
+  const router = useRouter();
 
   const toggleDropDown = ()=>{
     if(menu == "hidden"){
@@ -18,15 +20,15 @@ const Navbar = ({ cart,key,logout }) => {
 
   useEffect(()=>{
     const token = localStorage.getItem("token");
-    jwt.verify(token,"Its a long secret to be changed while production",(err,decoded)=>{
+    jwt.verify(token,process.env.NEXT_PUBLIC_JWT_SECRET,(err)=>{
       if (err) {
         localStorage.removeItem("token");
+        setIsLogin(false);
       }else{
-        console.log(decoded);
         setIsLogin(true);
       }
     })
-  },[key])
+  },[router.query])
 
   return (
     <div className="sticky top-0 z-20">

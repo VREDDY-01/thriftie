@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -7,7 +7,13 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPass, setIsPass] = useState(null);
-  const [isUser, setIsUser] = useState(null)
+  const [isUser, setIsUser] = useState(null);
+
+  useEffect(()=>{
+    if (localStorage.getItem("token")) {
+      router.push("/")
+    }
+  },[])
 
   const handleChange = (e) => {
     if (e.target.name == "email") {

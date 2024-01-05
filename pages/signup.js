@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-
 
 const Signup = () => {
   const router = useRouter();
@@ -10,49 +9,55 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
-  const [isPass, setisPass] = useState(null)
+  const [isPass, setisPass] = useState(null);
 
   const handleChange = (e) => {
-    if(e.target.name == "name"){
-      setName(e.target.value)
-    }
-    else if(e.target.name == "email"){
-      setEmail(e.target.value)
-    }
-    else if(e.target.name == "password"){
-      setPassword(e.target.value)
-    }
-    else if(e.target.name == "confpassword"){
-      setConfPassword(e.target.value)
-    }
-    else if(e.target.name == "contactNumber"){
-      setContactNumber(e.target.value)
+    if (e.target.name == "name") {
+      setName(e.target.value);
+    } else if (e.target.name == "email") {
+      setEmail(e.target.value);
+    } else if (e.target.name == "password") {
+      setPassword(e.target.value);
+    } else if (e.target.name == "confpassword") {
+      setConfPassword(e.target.value);
+    } else if (e.target.name == "contactNumber") {
+      setContactNumber(e.target.value);
     }
   };
+
+  useEffect(()=>{
+    if (localStorage.getItem("token")) {
+      router.push("/")
+    }
+  },[])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password == confPassword) {
-      setisPass(true)
+      setisPass(true);
       const formBody = { name, contactNumber, email, password };
 
-      const res = await fetch("http://localhost:3000/api/user/userSignup",{
-        method:"POST",
-        headers:{
-          'Content-Type':"application/json",
+      const res = await fetch("http://localhost:3000/api/user/userSignup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        body:JSON.stringify(formBody)
+        body: JSON.stringify(formBody),
       });
-      const data = await res.json();
-      console.log(data);
-      setEmail("");
-      setContactNumber("");
-      setName("");
-      setConfPassword("");
-      setPassword("");
-      router.push("/")
-    }else{
-      setisPass(false)
+      if (res.status == "201") {
+        const data = await res.json();
+        localStorage.setItem("token", data.usertoken);
+        setEmail("");
+        setContactNumber("");
+        setName("");
+        setConfPassword("");
+        setPassword("");
+        router.push("/");
+      }else{
+        console.log(res);
+      }
+    } else {
+      setisPass(false);
       setConfPassword("");
       setPassword("");
     }
@@ -67,7 +72,9 @@ const Signup = () => {
       <div className="relative flex w-96 flex-col space-y-5 rounded-lg border bg-white px-5 py-10 shadow-xl sm:mx-auto">
         <div className="-z-10 absolute top-4 left-1/2 h-full w-5/6 -translate-x-1/2 rounded-lg bg-orange-500 sm:-right-10 sm:top-auto sm:left-auto sm:w-full sm:translate-x-0"></div>
         <div className="mx-auto mb-2 space-y-3">
-          <h1 className="text-center text-3xl font-bold text-gray-700">Sign up</h1>
+          <h1 className="text-center text-3xl font-bold text-gray-700">
+            Sign up
+          </h1>
           <p className="text-gray-500">Sign up to create an account</p>
         </div>
 
@@ -154,7 +161,7 @@ const Signup = () => {
             </label>
           </div>
         </div>
-        
+
         <div>
           <div className="relative mt-2 w-full">
             <input
@@ -174,10 +181,15 @@ const Signup = () => {
               Confirm Password
             </label>
           </div>
-        {!isPass && isPass!=null && <p className="text-red-600 text-sm">Password does not match</p>}
+          {!isPass && isPass != null && (
+            <p className="text-red-600 text-sm">Password does not match</p>
+          )}
         </div>
         <div className="flex w-full items-center">
-          <button type="submit" className="shrink-0 inline-block w-36 rounded-lg bg-orange-500 py-3 font-bold text-white">
+          <button
+            type="submit"
+            className="shrink-0 inline-block w-36 rounded-lg bg-orange-500 py-3 font-bold text-white"
+          >
             Sign up
           </button>
           <a
