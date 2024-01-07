@@ -6,6 +6,13 @@ const orderSchema = mongoose.Schema(
       type:String,
       required:true
     },
+    email:{
+      type:String,
+      required:true
+    },
+    paymentInfo:{
+      type:String
+    },
     userId: {
       type: Schema.Types.ObjectId,
       ref: "User",
@@ -24,7 +31,7 @@ const orderSchema = mongoose.Schema(
     },
     status: {
       type: String,
-      default: "Pending",
+      default: "Initiated",
     },
   },
   {
