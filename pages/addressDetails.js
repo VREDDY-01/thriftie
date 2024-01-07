@@ -54,7 +54,7 @@ const AddressDetails = ({ cart,subTotal }) => {
     e.preventDefault();
     console.log("here...");
     const res = await initializeRazorpay();
-    const formBody = { subTotal,email,contact,name,address,pincode,state,city,user,cart};
+    const formBody = { subTotal,address,pincode,state,city,user,cart};
 
     if (!res) {
       alert("Razorpay SDK Failed to load");

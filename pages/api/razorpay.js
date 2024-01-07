@@ -2,14 +2,13 @@ import Razorpay from "razorpay";
 import shortid from "shortid";
 import connectDb from "@/middleware/mongoose";
 import User from "@/models/User";
+import Order from "@/models/Order";
+import Product from "@/models/Product";
 
 const handler = async (req, res) => {
   if (req.method === "POST") {
     const {
       subTotal,
-      email,
-      contact,
-      name,
       address,
       pincode,
       state,
@@ -18,17 +17,27 @@ const handler = async (req, res) => {
       cart,
     } = req.body;
     // Initialize razorpay object
+    const userEmail = JSON.parse(user).email;
     const razorpay = new Razorpay({
       key_id: process.env.RAZORPAY_KEY,
       key_secret: process.env.RAZORPAY_SECRET,
     });
 
     // Create an order -> generate the OrderID -> Send it to the Front-end
-    const user_id = User.find({ email: user.email });
-    const products = cart;
+    const foundUser = await User.find({ email: userEmail });
+    const user_id = foundUser[0]._id;
+    const products = [];
+    // inser all products into above array
     const adress_comps = [address, city, state, pincode];
     const final_address = adress_comps.join(",");
-    //Pending create an order
+    // Pending create an order
+    const newOrder = await new Order({
+      userId:user_id,
+      address:final_address,
+      amount:subTotal,
+      products:products
+    });
+    await newOrder.save();
 
     const payment_capture = 1;
     const amount = parseInt(subTotal);
