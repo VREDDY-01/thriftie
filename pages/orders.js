@@ -142,7 +142,7 @@ export async function getServerSideProps(context) {
   const orders = await Order.find({});
     
   return {
-    props: { orders:orders },
+    props: { orders:JSON.parse(JSON.stringify(orders)) },
   };
 }
 

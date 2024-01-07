@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import jwt from "jsonwebtoken";
 import { useRouter } from "next/router";
 
-const AddressDetails = ({ cart,subTotal }) => {
+const AddressDetails = ({ cart, subTotal }) => {
+  const [disabled, setdisabled] = useState(true);
   const [user, setuser] = useState({});
   const router = useRouter();
   const [name, setName] = useState("");
@@ -13,28 +14,28 @@ const AddressDetails = ({ cart,subTotal }) => {
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
 
-  const handleChange = (e)=>{
+  const handleChange = (e) => {
     if (e.target.name == "name") {
       setName(e.target.value);
     } else if (e.target.name == "email") {
       setEmail(e.target.value);
-    }
-    else if (e.target.name == "address") {
+    } else if (e.target.name == "address") {
       setaddress(e.target.value);
-    }
-    else if (e.target.name == "contactNumber") {
+    } else if (e.target.name == "contactNumber") {
       setContact(e.target.value);
-    }
-    else if (e.target.name == "city") {
+    } else if (e.target.name == "city") {
       setCity(e.target.value);
-    }
-    else if (e.target.name == "state") {
+    } else if (e.target.name == "state") {
       setState(e.target.value);
-    }
-    else if (e.target.name == "pincode") {
+    } else if (e.target.name == "pincode") {
       setPincode(e.target.value);
     }
-  }
+    if (name && email && contact && address && pincode && state && city) {
+      setdisabled(false);
+    } else {
+      setdisabled(true);
+    }
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -47,75 +48,13 @@ const AddressDetails = ({ cart,subTotal }) => {
           setuser(localStorage.getItem("user"));
         }
       });
+    } else {
+      router.push("/login");
     }
   }, [router.query]);
 
-  const makePayment = async (e) => {
-    e.preventDefault();
-    console.log("here...");
-    const res = await initializeRazorpay();
-    const formBody = { subTotal,address,pincode,state,city,user,cart};
-
-    if (!res) {
-      alert("Razorpay SDK Failed to load");
-      return;
-    }
-
-    // Make API call to the serverless API
-    const data = await fetch("http://localhost:3000/api/razorpay", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formBody),
-    }).then((t) => t.json());
-
-    var options = {
-      key: process.env.RAZORPAY_KEY, // Enter the Key ID generated from the Dashboard
-      name: "Thriftie",
-      currency: data.currency,
-      amount: data.amount,
-      order_id: data.id,
-      description: "Thankyou for your ordering.",
-      image: "/logo.png",
-      handler: function (response) {
-        // Validate payment at server - using webhooks is a better idea.
-        alert(response.razorpay_payment_id);
-        alert(response.razorpay_order_id);
-        alert(response.razorpay_signature);
-      },
-      prefill: {
-        name: user.name,
-        email: user.email,
-        contact: user.contactNumber,
-      },
-    };
-
-    const paymentObject = new window.Razorpay(options);
-    paymentObject.open();
-  };
-  const initializeRazorpay = () => {
-    return new Promise((resolve) => {
-      const script = document.createElement("script");
-      script.src = "https://checkout.razorpay.com/v1/checkout.js";
-      // document.body.appendChild(script);
-
-      script.onload = () => {
-        resolve(true);
-      };
-      script.onerror = () => {
-        resolve(false);
-      };
-
-      document.body.appendChild(script);
-    });
-  };
   return (
-    <form
-      className="text-gray-600 body-font relative"
-      method="POST"
-      onSubmit={makePayment}
-    >
+    <div className="text-gray-600 body-font relative">
       <div className="container px-5 py-10 mx-auto">
         <div className="flex flex-col text-center w-full mb-5">
           <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">
@@ -134,7 +73,7 @@ const AddressDetails = ({ cart,subTotal }) => {
                   Name
                 </label>
                 <input
-                onChange={handleChange}
+                  onChange={handleChange}
                   value={name}
                   type="text"
                   id="name"
@@ -152,7 +91,7 @@ const AddressDetails = ({ cart,subTotal }) => {
                   Email
                 </label>
                 <input
-                onChange={handleChange}
+                  onChange={handleChange}
                   value={email}
                   type="email"
                   id="email"
@@ -170,8 +109,8 @@ const AddressDetails = ({ cart,subTotal }) => {
                   Address
                 </label>
                 <textarea
-                onChange={handleChange}
-                value={address}
+                  onChange={handleChange}
+                  value={address}
                   id="address"
                   name="address"
                   className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-16 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
@@ -187,7 +126,7 @@ const AddressDetails = ({ cart,subTotal }) => {
                   Phone
                 </label>
                 <input
-                onChange={handleChange}
+                  onChange={handleChange}
                   value={contact}
                   type="text"
                   id="contactNumber"
@@ -205,7 +144,7 @@ const AddressDetails = ({ cart,subTotal }) => {
                   City
                 </label>
                 <input
-                onChange={handleChange}
+                  onChange={handleChange}
                   value={city}
                   type="text"
                   id="city"
@@ -223,7 +162,7 @@ const AddressDetails = ({ cart,subTotal }) => {
                   State
                 </label>
                 <input
-                onChange={handleChange}
+                  onChange={handleChange}
                   value={state}
                   type="text"
                   id="state"
@@ -241,7 +180,7 @@ const AddressDetails = ({ cart,subTotal }) => {
                   PinCode
                 </label>
                 <input
-                onChange={handleChange}
+                  onChange={handleChange}
                   value={pincode}
                   type="text"
                   id="pincode"
@@ -253,8 +192,9 @@ const AddressDetails = ({ cart,subTotal }) => {
           </div>
           <input type="hidden" value={subTotal} />
           <button
+            disabled={disabled}
             type="submit"
-            className="my-16 group inline-flex w-full items-center justify-center rounded-md bg-orange-500 px-6 py-4 text-lg font-semibold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-gray-800"
+            className="disabled:bg-orange-400 my-16 group inline-flex w-full items-center justify-center rounded-md bg-orange-500 px-6 py-4 text-lg font-semibold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-gray-800"
           >
             Pay {subTotal}
             <svg
@@ -274,7 +214,7 @@ const AddressDetails = ({ cart,subTotal }) => {
           </button>
         </div>
       </div>
-    </form>
+    </div>
   );
 };
 
