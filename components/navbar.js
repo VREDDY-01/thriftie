@@ -5,7 +5,7 @@ import Dropdown from "./dropdown";
 import jwt from "jsonwebtoken";
 import { useRouter } from "next/router";
 
-const Navbar = ({ cart,key,logout }) => {
+const Navbar = ({ cart,logout }) => {
   const [isLogin, setIsLogin] = useState(false);
   const [menu, setmenu] = useState("hidden");
   const router = useRouter();

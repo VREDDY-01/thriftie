@@ -39,6 +39,7 @@ const Login = () => {
       setIsPass(true);
       const data = await res.json();
       localStorage.setItem("token",data.usertoken);
+      localStorage.setItem("user",JSON.stringify(data.user));
       setEmail("");
       setPassword("");
       router.push("/");
