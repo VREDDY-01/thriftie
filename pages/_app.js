@@ -26,6 +26,10 @@ export default function App({ Component, pageProps }) {
 
   useEffect(()=>{
     const token = localStorage.getItem("token");
+    const isCart = localStorage.getItem("cart");
+    if(!isCart){
+      setCart({});
+    }
     if (token) {
       setKey(Math.random())
     }

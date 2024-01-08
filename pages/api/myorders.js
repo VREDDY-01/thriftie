@@ -1,11 +1,10 @@
 import Order from "@/models/Order";
 import connectDb from "@/middleware/mongoose";
-import jwt from "jsonwebtoken";
 
 const handler = async (req, res) => {
-  const email = req.body.email;
-  if (email) {
-    let Orders = await Order.find({ email: email });
+  const id = req.body.id;
+  if (id) {
+    let Orders = await Order.find({ userId: id });
     res.status(200).json({ orders: Orders });
   } else {
     res.status(401).json({ message: "You are not Authorized!" });

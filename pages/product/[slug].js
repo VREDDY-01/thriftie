@@ -11,13 +11,13 @@ const Slug = ({ addToCart, product, variants }) => {
   const slug = router.query;
   const [size, setSize] = useState();
   const [color, setColor] = useState();
-  const [pin, setPin] = useState();
+  const [pin, setPin] = useState("");
   const [service, setService] = useState(null);
 
   const checkServicebility = async () => {
     let pins = await fetch("http://localhost:3000/api/pincode");
     let pinjson = await pins.json();
-    if (pinjson.includes(parseInt(pin))) {
+    if (Object.keys(pinjson.pincodes).includes(pin)) {
       setService(true);
       toast.success('Your Pincode is Serviceble', {
         position: "top-right",

@@ -14,7 +14,7 @@ const AddressDetails = ({ cart, subTotal }) => {
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     if (e.target.name == "name") {
       setName(e.target.value);
     } else if (e.target.name == "email") {
@@ -29,6 +29,17 @@ const AddressDetails = ({ cart, subTotal }) => {
       setState(e.target.value);
     } else if (e.target.name == "pincode") {
       setPincode(e.target.value);
+      if (e.target.value.length == 6) {
+        let pins = await fetch("http://localhost:3000/api/pincode");
+        let pinjson = await pins.json();
+        if (Object.keys(pinjson.pincodes).includes(e.target.value)) {
+          setCity(pinjson.pincodes[e.target.value][0]);
+          setState(pinjson.pincodes[e.target.value][1]);
+        }
+      } else {
+        setCity("");
+        setState("");
+      }
     }
     if (name && email && contact && address && pincode && state && city) {
       setdisabled(false);
@@ -40,12 +51,12 @@ const AddressDetails = ({ cart, subTotal }) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      jwt.verify(token, process.env.NEXT_PUBLIC_JWT_SECRET, (err) => {
+      jwt.verify(token, process.env.NEXT_PUBLIC_JWT_SECRET, (err,decoded) => {
         if (err) {
           localStorage.removeItem("token");
           router.push("/");
         } else {
-          setuser(localStorage.getItem("user"));
+          setuser(decoded);
         }
       });
     } else {
@@ -53,8 +64,38 @@ const AddressDetails = ({ cart, subTotal }) => {
     }
   }, [router.query]);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let oid = Math.round(new Date() * Math.random());
+    oid = oid.toString();
+    const amount = subTotal.toString();
+    const addressItems = [address,city,state,pincode];
+    const finalAddress = addressItems.join(",");
+    const userId = user.id;
+    const formBody = {email,finalAddress,amount,oid,cart,userId}
+    const placeOrder = async (resBody) => {
+      const res = await fetch("http://localhost:3000/api/preTransaction", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(resBody),
+      });
+      if (res.status == "201") {
+        let a = await res.json();
+        localStorage.removeItem("cart");
+        router.push(`/order/${a.order.order_id}`);
+      }
+    };
+    placeOrder(formBody);
+  };
+
   return (
-    <div className="text-gray-600 body-font relative">
+    <form
+      className="text-gray-600 body-font relative"
+      method="POST"
+      onSubmit={handleSubmit}
+    >
       <div className="container px-5 py-10 mx-auto">
         <div className="flex flex-col text-center w-full mb-5">
           <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">
@@ -214,7 +255,7 @@ const AddressDetails = ({ cart, subTotal }) => {
           </button>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 
