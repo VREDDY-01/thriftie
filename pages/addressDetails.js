@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import jwt from "jsonwebtoken";
 import { useRouter } from "next/router";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddressDetails = ({ cart, subTotal }) => {
   const [disabled, setdisabled] = useState(true);
@@ -51,7 +53,7 @@ const AddressDetails = ({ cart, subTotal }) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      jwt.verify(token, process.env.NEXT_PUBLIC_JWT_SECRET, (err,decoded) => {
+      jwt.verify(token, process.env.NEXT_PUBLIC_JWT_SECRET, (err, decoded) => {
         if (err) {
           localStorage.removeItem("token");
           router.push("/");
@@ -69,10 +71,10 @@ const AddressDetails = ({ cart, subTotal }) => {
     let oid = Math.round(new Date() * Math.random());
     oid = oid.toString();
     const amount = subTotal.toString();
-    const addressItems = [address,city,state,pincode];
+    const addressItems = [address, city, state, pincode];
     const finalAddress = addressItems.join(",");
     const userId = user.id;
-    const formBody = {email,finalAddress,amount,oid,cart,userId}
+    const formBody = { email, finalAddress, amount, oid, cart, userId };
     const placeOrder = async (resBody) => {
       const res = await fetch("http://localhost:3000/api/preTransaction", {
         method: "POST",
@@ -81,10 +83,38 @@ const AddressDetails = ({ cart, subTotal }) => {
         },
         body: JSON.stringify(resBody),
       });
+      let a = await res.json();
       if (res.status == "201") {
-        let a = await res.json();
-        localStorage.removeItem("cart");
-        router.push(`/order/${a.order.order_id}`);
+        toast.success("Order Successfully Placed!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setTimeout(() => {
+          localStorage.removeItem("cart");
+          router.push(`/order/${a.order.order_id}`);
+        }, 2000);
+      } else {
+        toast.error("Cart Tampered! Please Try Again!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setTimeout(() => {
+          localStorage.removeItem("cart");
+          localStorage.removeItem("subt");
+          router.push("/");
+        }, 2000);
       }
     };
     placeOrder(formBody);
@@ -96,6 +126,18 @@ const AddressDetails = ({ cart, subTotal }) => {
       method="POST"
       onSubmit={handleSubmit}
     >
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className="container px-5 py-10 mx-auto">
         <div className="flex flex-col text-center w-full mb-5">
           <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">
