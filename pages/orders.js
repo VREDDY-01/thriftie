@@ -5,17 +5,43 @@ import mongoose from "mongoose";
 import { useRouter } from "next/router";
 import jwt from "jsonwebtoken";
 
-const Orders = ({ orders }) => {
+const Orders = () => {
+  const [orders, setOrders] = useState([]);
+  const [verified, setVerified] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    jwt.verify(token, process.env.NEXT_PUBLIC_JWT_SECRET, (err) => {
-      if (err) {
-        localStorage.removeItem("token");
-        router.push("/");
+    const getUsers = async (decoded) => {
+      const res = await fetch("http://localhost:3000/api/myorders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(decoded),
+      });
+      if (res.status == "200") {
+        let a = await res.json();
+        setOrders(a.orders);
+      } else {
+        setOrders([]);
+        router.push("/login");
       }
-    });
+    };
+    const token = localStorage.getItem("token");
+    if (token) {
+      jwt.verify(token, process.env.NEXT_PUBLIC_JWT_SECRET, (err, decoded) => {
+        if (err) {
+          localStorage.removeItem("token");
+          router.push("/");
+        } else {
+          getUsers(decoded);
+          setVerified(true);
+        }
+      });
+    }else{
+      setVerified(false);
+      router.push("/")
+    }
   }, [router.query]);
 
   let style = {
@@ -26,7 +52,8 @@ const Orders = ({ orders }) => {
   };
 
   return (
-    <div className="min-h-screen">
+    <>
+    {verified && <div className="min-h-screen">
       <h1 className="text-2xl font-semiboldbold text-center p-8">My Orders</h1>
       <div className="container mx-auto ">
         <div className="flex flex-col">
@@ -71,12 +98,18 @@ const Orders = ({ orders }) => {
                   <tbody>
                     {orders.map((order) => {
                       return (
-                        <tr key={order._id} className="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
+                        <tr
+                          key={order.order_id}
+                          className="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600"
+                        >
                           <td className="whitespace-nowrap  md:text-sm text-xs text-center md:p-4 p-1 font-medium">
-                            #Oid-{order._id}
+                            #Oid-{order.order_id}
                           </td>
                           <td className="whitespace-normal md:text-sm text-xs text-justify md:max-w-[15vw] p-1 md:p-4">
-                            <div className=" text-center max-w-[30vw]" style={style}>
+                            <div
+                              className=" text-center max-w-[30vw]"
+                              style={style}
+                            >
                               {Object.keys(order.products).length}
                             </div>
                           </td>
@@ -103,20 +136,9 @@ const Orders = ({ orders }) => {
           </div>
         </div>
       </div>
-    </div>
+    </div>}
+    </>
   );
 };
-
-export async function getServerSideProps(context) {
-  if (!mongoose.connections[0].readyState) {
-    await mongoose.connect(process.env.MONGO_URI);
-  }
-  
-  const orders = await Order.find({});
-
-  return {
-    props: { orders: JSON.parse(JSON.stringify(orders)) },
-  };
-}
 
 export default Orders;

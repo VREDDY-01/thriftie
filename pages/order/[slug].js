@@ -28,7 +28,7 @@ const MyOrder = ({ order }) => {
         <div className="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
           <div className="flex justify-start item-start space-y-2 flex-col">
             <h1 className="text-3xl dark:text-white lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800">
-              Order #{order._id}
+              Order #{order.order_id}
             </h1>
             <p className="text-base dark:text-gray-300 font-medium leading-6 text-gray-600">
               {order.createdAt}
@@ -87,7 +87,7 @@ const MyOrder = ({ order }) => {
                             {products[k].qty}
                           </p>
                           <p className="text-base dark:text-white xl:text-lg font-semibold leading-6 text-gray-800">
-                            ₹{products[k].price}.00
+                            ₹{products[k].price*products[k].qty}.00
                           </p>
                         </div>
                       </div>
