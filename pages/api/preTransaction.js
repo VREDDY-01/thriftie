@@ -11,10 +11,12 @@ const handler = async (req, res) => {
       product = await Product.findOne({slug:item})
       if(product.price != req.body.cart[item].price){
         res.status(401).json({error:"Product prices have been updated!Please Redo."});
+        return;
       }
     }
     if(sumTotal != req.body.amount){
       res.status(401).json({error:"Product prices have been updated!Please Redo."});
+      return;
     }
     const newOrder = new Order({
         email:req.body.email,

@@ -97,6 +97,7 @@ const AddressDetails = ({ cart, subTotal }) => {
         });
         setTimeout(() => {
           localStorage.removeItem("cart");
+          localStorage.removeItem("subt");
           router.push(`/order/${a.order.order_id}`);
         }, 2000);
       } else {

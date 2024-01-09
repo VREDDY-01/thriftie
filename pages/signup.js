@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Signup = () => {
   const router = useRouter();
@@ -45,14 +47,24 @@ const Signup = () => {
         body: JSON.stringify(formBody),
       });
       if (res.status == "201") {
-        const data = await res.json();
-        localStorage.setItem("token", data.usertoken);
+        toast.success("User Created Sucessfully! Please Login Again.", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         setEmail("");
         setContactNumber("");
         setName("");
         setConfPassword("");
         setPassword("");
-        router.push("/");
+        setTimeout(() => {
+          router.push("/login");
+        }, 2000); 
       }else{
         console.log(res);
       }
@@ -69,6 +81,18 @@ const Signup = () => {
       method="POST"
       onSubmit={handleSubmit}
     >
+    <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className="relative flex w-96 flex-col space-y-5 rounded-lg border bg-white px-5 py-10 shadow-xl sm:mx-auto">
         <div className="-z-10 absolute top-4 left-1/2 h-full w-5/6 -translate-x-1/2 rounded-lg bg-orange-500 sm:-right-10 sm:top-auto sm:left-auto sm:w-full sm:translate-x-0"></div>
         <div className="mx-auto mb-2 space-y-3">

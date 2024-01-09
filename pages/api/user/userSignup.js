@@ -6,7 +6,6 @@ import jwt from "jsonwebtoken";
 const handler = async (req, res) => {
     if (req.method == 'POST') {
         try{
-            console.log(req.body);
             const {name,email,password,contactNumber} = req.body;
             const errors = {emailError:String};
             const existingusermail = await User.findOne({email});
