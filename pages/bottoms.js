@@ -48,11 +48,11 @@ export async function getServerSideProps(context) {
   let Bottoms = {};
     for(let item of products){
         if(item.title in Bottoms){
-            if(!Bottoms[item.title].color.includes(item.color) && item.availableQty>0){
+            if(item.availableQty>0 && !Bottoms[item.title].color.includes(item.color)){
                 Bottoms[item.title].color.push(item.color);
             }
-            if(!Bottoms[item.title].size.includes(item.size) && item.availableQty>0){
-                Bottoms[item.title].size.push(item.size);
+            if(item.availableQty>0 && !Bottoms[item.title].size.includes(item.size)){
+                // Bottoms[item.title].size.push(item.size);
             }
             
         }else{

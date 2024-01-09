@@ -100,7 +100,19 @@ const AddressDetails = ({ cart, subTotal }) => {
           localStorage.removeItem("subt");
           router.push(`/order/${a.order.order_id}`);
         }, 2000);
-      } else {
+      } else if(res.status == "202"){
+        toast.error(a.message, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+      else {
         toast.error("Cart Tampered! Please Try Again!", {
           position: "top-right",
           autoClose: 2000,
