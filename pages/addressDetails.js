@@ -43,7 +43,8 @@ const AddressDetails = ({ cart, subTotal }) => {
         setState("");
       }
     }
-    if (name && email && contact && address && pincode && state && city) {
+    if (name && email && contact && address && pincode && state && city && Object.keys(cart).length > 0) {
+      console.log(Object.keys(cart).length);
       setdisabled(false);
     } else {
       setdisabled(true);

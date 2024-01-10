@@ -52,7 +52,7 @@ export async function getServerSideProps(context) {
                 Bottoms[item.title].color.push(item.color);
             }
             if(item.availableQty>0 && !Bottoms[item.title].size.includes(item.size)){
-                // Bottoms[item.title].size.push(item.size);
+                Bottoms[item.title].size.push(item.size);
             }
             
         }else{
@@ -60,6 +60,9 @@ export async function getServerSideProps(context) {
             if(item.availableQty>0){
                 Bottoms[item.title].color = [item.color];
                 Bottoms[item.title].size = [item.size];
+            }else{
+              Bottoms[item.title].color = [];
+                Bottoms[item.title].size = [];
             }
         }
     }
