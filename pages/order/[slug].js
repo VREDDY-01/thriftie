@@ -31,7 +31,7 @@ const MyOrder = ({ order }) => {
               Order #{order.order_id}
             </h1>
             <p className="text-base dark:text-gray-300 font-medium leading-6 text-gray-600">
-              {order.createdAt}
+              {new Date(order.createdAt).toLocaleDateString("hi-In") +" - " + new Date(order.createdAt).toLocaleTimeString("hi-In")}
             </p>
           </div>
 

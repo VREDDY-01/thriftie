@@ -117,12 +117,12 @@ const Orders = () => {
                             ₹{order.amount}.0
                           </td>
                           <td className="whitespace-nowrap md:text-sm text-xs text-center p-1 md:p-4">
-                            {order.createdAt}
+                            {new Date(order.createdAt).toLocaleDateString("hi-In") +" - " + new Date(order.createdAt).toLocaleTimeString("hi-In")}
                           </td>
                           <td className="whitespace-nowrap md:text-sm text-xs text-center p-1 md:p-4">
                             <Link href={`/order/${order.order_id}`}>
                               <button className="flex m-auto  text-white bg-orange-500 border-0 py-1 px-1 md:px-2 md:text-md text-xs md:font-semibold focus:outline-none hover:bg-orange-600 rounded">
-                                Know More
+                                View Details
                               </button>
                             </Link>
                           </td>

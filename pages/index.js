@@ -3,6 +3,7 @@ import Head from "next/head";
 import Category from "../components/category.js";
 import Carousel from "../components/carousel.js";
 import { initFlowbite } from "flowbite";
+import NewArrival from "@/components/newArrival.js";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +21,7 @@ export default function Home() {
 
       <Carousel />
       <Category />
+      <NewArrival/>
     </div>
   );
 }

@@ -16,7 +16,8 @@ module.exports = {
       },
       height:{
         140:"40rem",
-        150:"50rem"
+        150:"50rem",
+        136:"34rem"
       },
       screens:{
         'smx': { 'raw': '(max-width: 765px)' },
