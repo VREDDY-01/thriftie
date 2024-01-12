@@ -32,7 +32,7 @@ const AddressDetails = ({ cart, subTotal }) => {
     } else if (e.target.name == "pincode") {
       setPincode(e.target.value);
       if (e.target.value.length == 6) {
-        let pins = await fetch("http://localhost:3000/api/pincode");
+        let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
         let pinjson = await pins.json();
         if (Object.keys(pinjson.pincodes).includes(e.target.value)) {
           setCity(pinjson.pincodes[e.target.value][0]);
@@ -77,7 +77,7 @@ const AddressDetails = ({ cart, subTotal }) => {
     const userId = user.id;
     const formBody = { email, finalAddress, amount, oid, cart, userId };
     const placeOrder = async (resBody) => {
-      const res = await fetch("http://localhost:3000/api/preTransaction", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/preTransaction`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

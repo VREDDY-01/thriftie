@@ -39,7 +39,7 @@ const Signup = () => {
       setisPass(true);
       const formBody = { name, contactNumber, email, password };
 
-      const res = await fetch("http://localhost:3000/api/user/userSignup", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/user/userSignup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -66,7 +66,16 @@ const Signup = () => {
           router.push("/login");
         }, 2000); 
       }else{
-        console.log(res);
+        toast.info("User Already Exists!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
     } else {
       setisPass(false);

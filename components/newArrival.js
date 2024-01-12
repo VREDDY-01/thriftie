@@ -7,7 +7,7 @@ const NewArrival = () => {
   const [products, setproducts] = useState({});
   useEffect(() => {
     const getProducts = async () => {
-      const res = await fetch("http://localhost:3000/api/newArrival", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/newArrival`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

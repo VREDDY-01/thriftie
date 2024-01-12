@@ -27,7 +27,7 @@ const Login = () => {
     e.preventDefault();
     const formBody = { email, password };
 
-    const res = await fetch("http://localhost:3000/api/user/userLogin", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/user/userLogin`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

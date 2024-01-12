@@ -15,7 +15,7 @@ const Slug = ({ addToCart, product, variants }) => {
   const [service, setService] = useState(null);
 
   const checkServicebility = async () => {
-    let pins = await fetch("http://localhost:3000/api/pincode");
+    let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
     let pinjson = await pins.json();
     if (Object.keys(pinjson.pincodes).includes(pin)) {
       setService(true);
@@ -54,7 +54,7 @@ const Slug = ({ addToCart, product, variants }) => {
   }, [router.query]);
 
   const refreshVariant = (newcolor, newsize) => {
-    let href = `http://localhost:3000/product/${variants[newcolor][newsize]["slug"]}`;
+    let href = `${process.env.NEXT_PUBLIC_HOST}/product/${variants[newcolor][newsize]["slug"]}`;
 
     if (href) {
       router.push(href);
