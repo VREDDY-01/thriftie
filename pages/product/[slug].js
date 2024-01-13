@@ -5,8 +5,10 @@ import Product from "@/models/Product";
 import mongoose from "mongoose";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Custom404 from "../not-found";
+import Error from "next/error";
 
-const Slug = ({ addToCart, product, variants }) => {
+const Slug = ({ addToCart, product, variants, error }) => {
   const router = useRouter();
   const slug = router.query;
   const [size, setSize] = useState();
@@ -49,8 +51,10 @@ const Slug = ({ addToCart, product, variants }) => {
   };
 
   useEffect(() => {
-    setColor(product.color);
-    setSize(product.size);
+    if (!error) {
+      setColor(product.color);
+      setSize(product.size);
+    }
   }, [router.query]);
 
   const refreshVariant = (newcolor, newsize) => {
@@ -60,7 +64,9 @@ const Slug = ({ addToCart, product, variants }) => {
       router.push(href);
     }
   };
-
+  if(error==404){
+    return <Custom404/>
+  }
   return (
     <div>
       <section className="text-gray-600 body-font overflow-hidden">
@@ -152,7 +158,9 @@ const Slug = ({ addToCart, product, variants }) => {
                     ₹{product.price}
                   </span>
                 ) : (
-                  <span className="title-font font-medium text-2xl text-gray-900">Out of Stock!</span>
+                  <span className="title-font font-medium text-2xl text-gray-900">
+                    Out of Stock!
+                  </span>
                 )}
                 <button
                   disabled={product.availableQty <= 0}
@@ -240,6 +248,13 @@ export async function getServerSideProps(context) {
     await mongoose.connect(process.env.MONGO_URI);
   }
   const product = await Product.findOne({ slug: context.query.slug });
+  if (product == null) {
+    return {
+      props: {
+        error: 404,
+      },
+    };
+  }
   const variants = await Product.find({ title: product.title });
   let colorSizeSlug = {};
   for (let item of variants) {

@@ -5,30 +5,30 @@ import Dropdown from "./dropdown";
 import jwt from "jsonwebtoken";
 import { useRouter } from "next/router";
 
-const Navbar = ({ cart,logout }) => {
+const Navbar = ({ cart, logout }) => {
   const [isLogin, setIsLogin] = useState(false);
   const [menu, setmenu] = useState("hidden");
   const router = useRouter();
 
-  const toggleDropDown = ()=>{
-    if(menu == "hidden"){
-      setmenu("block")
-    }else{
-      setmenu("hidden")
+  const toggleDropDown = () => {
+    if (menu == "hidden") {
+      setmenu("block");
+    } else {
+      setmenu("hidden");
     }
-  }
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     const token = localStorage.getItem("token");
-    jwt.verify(token,process.env.NEXT_PUBLIC_JWT_SECRET,(err)=>{
+    jwt.verify(token, process.env.NEXT_PUBLIC_JWT_SECRET, (err) => {
       if (err) {
         localStorage.removeItem("token");
         setIsLogin(false);
-      }else{
+      } else {
         setIsLogin(true);
       }
-    })
-  },[router.query])
+    });
+  }, [router.query]);
 
   return (
     <div className="sticky top-0 z-20">
@@ -45,12 +45,12 @@ const Navbar = ({ cart,logout }) => {
               <Link
                 href={"/login"}
                 type="button"
-                className="text-white bg-orange-500 hover:bg-orange-800 focus:ring-1 focus:outline-none focus:ring-blue-100 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="text-white bg-orange-500 hover:bg-orange-800 focus:ring-1 focus:outline-none focus:ring-orange-100 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800"
               >
                 Login
               </Link>
             )}
-            {isLogin && <Dropdown logout={logout}/>}
+            {isLogin && <Dropdown logout={logout} />}
             <Link href={"/checkout"}>
               <div className="shrink-0  relative">
                 {Object.keys(cart).length > 0 && (
@@ -63,7 +63,7 @@ const Navbar = ({ cart,logout }) => {
             </Link>
 
             <button
-            onClick={toggleDropDown}
+              onClick={toggleDropDown}
               data-collapse-toggle="navbar-sticky"
               type="button"
               className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
@@ -96,7 +96,7 @@ const Navbar = ({ cart,logout }) => {
               <li>
                 <Link
                   href={"/tshirts"}
-                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-orange-700 md:p-0 md:dark:hover:text-orange-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                   aria-current="page"
                 >
                   Tshirts
@@ -105,7 +105,7 @@ const Navbar = ({ cart,logout }) => {
               <li>
                 <Link
                   href={"/bottoms"}
-                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-orange-700 md:p-0 md:dark:hover:text-orange-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
                   Bottoms
                 </Link>
@@ -113,25 +113,9 @@ const Navbar = ({ cart,logout }) => {
               <li>
                 <Link
                   href={"/footwear"}
-                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-orange-700 md:p-0 md:dark:hover:text-orange-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
                   Footwear
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href={"/contact"}
-                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                >
-                  Contact
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href={"/about"}
-                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                >
-                  About
                 </Link>
               </li>
             </ul>

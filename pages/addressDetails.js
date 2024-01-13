@@ -75,7 +75,7 @@ const AddressDetails = ({ cart, subTotal }) => {
     const addressItems = [address, city, state, pincode];
     const finalAddress = addressItems.join(",");
     const userId = user.id;
-    const formBody = { email, finalAddress, amount, oid, cart, userId };
+    const formBody = { email, finalAddress, amount, oid, cart, userId,pincode };
     const placeOrder = async (resBody) => {
       const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/preTransaction`, {
         method: "POST",
