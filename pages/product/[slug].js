@@ -6,7 +6,6 @@ import mongoose from "mongoose";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Custom404 from "../not-found";
-import Error from "next/error";
 
 const Slug = ({ addToCart, product, variants, error }) => {
   const router = useRouter();

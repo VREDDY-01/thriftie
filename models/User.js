@@ -27,6 +27,12 @@ const userSchema = mongoose.Schema(
         avatar:{
             type:String
         },
+        address:{
+            type:String
+        },
+        pincode:{
+            type:String
+        },
         orders:[
             {
                 type:Schema.Types.ObjectId,
