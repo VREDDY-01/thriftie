@@ -9,6 +9,7 @@ const Bottoms = ({ products }) => {
       <section className="md:text-gray-600 body-font">
         <div className="container py-14 px-20 md:px-20 lg:px- md:py-24 mx-auto">
           <div className="flex flex-wrap -m-4 justify-center">
+          {Object.keys(products).length === 0 && <p>Sorry all the Bottoms are currently out of stock. New Stock coming soon. Stay Tuned!</p>}
             {Object.keys(products).map((prod) => {
               return (
                 <div key={products[prod]._id} className="lg:w-1/3 xl:w-1/4 md:w-1/2 p-4 cursor-pointer w-full hover:scale-105 md:text-left text-center">

@@ -120,12 +120,12 @@ const Login = () => {
           >
             Login
           </button>
-          <a
+          <Link
             className="w-full text-center text-sm font-medium text-gray-600 hover:underline"
-            href="#"
+            href="/forgotPassword"
           >
             Forgot your password?
-          </a>
+          </Link>
         </div>
         <p className="text-center text-gray-600">
           Don't have an account?

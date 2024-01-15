@@ -225,12 +225,12 @@ const Signup = () => {
           >
             Sign up
           </button>
-          <a
+          <Link
             className="w-full text-center text-sm font-medium text-gray-600 hover:underline"
-            href="#"
+            href="/forgotPassword"
           >
             Forgot your password?
-          </a>
+          </Link>
         </div>
         <p className="text-center text-gray-600">
           Already have an account?
