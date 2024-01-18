@@ -45,9 +45,18 @@ const Navbar = ({ cart, logout }) => {
               <Link
                 href={"/login"}
                 type="button"
-                className="text-white bg-orange-500 hover:bg-orange-800 focus:ring-1 focus:outline-none focus:ring-orange-100 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800"
+                className="text-white mx-1 bg-orange-500 hover:bg-orange-800 focus:ring-1 focus:outline-none focus:ring-orange-100 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800"
               >
                 Login
+              </Link>
+            )}
+            {!isLogin && (
+              <Link
+                href={"/seller/login"}
+                type="button"
+                className="text-white mx-1 hidden md:inline-block bg-black hover:bg-gray-800 focus:ring-1 focus:outline-none focus:ring-orange-100 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+              >
+                Login as a Seller
               </Link>
             )}
             {isLogin && <Dropdown logout={logout} />}
@@ -116,6 +125,14 @@ const Navbar = ({ cart, logout }) => {
                   className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-orange-700 md:p-0 md:dark:hover:text-orange-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
                   Footwear
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href={"/seller/login"}
+                  className="hidden smx:block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-orange-700 md:p-0 md:dark:hover:text-orange-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                >
+                  Seller Login
                 </Link>
               </li>
             </ul>

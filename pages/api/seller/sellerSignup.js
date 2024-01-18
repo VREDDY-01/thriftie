@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 const handler = async (req, res) => {
     if (req.method == 'POST') {
         try{
-            const {name,email,password,contactNumber,dob,avatar} = req.body;
+            const {name,email,password,contactNumber} = req.body;
             const errors = {emailError:String};
             const existingSellermail = await Seller.findOne({email});
             const existingSellernum = await Seller.findOne({contactNumber});
@@ -27,17 +27,13 @@ const handler = async (req, res) => {
             const date = new Date();
             const selComps = ["SEL",date.getFullYear(),helper];
             const username = selComps.join("");
-            const verified = false;
             const hashedPass = await bcrypt.hash(password,10);
             const newSeller = await new Seller({
                 name,
                 username,
                 email,
                 password:hashedPass,
-                contactNumber,
-                dob,
-                avatar,
-                verified
+                contactNumber
             });
             await newSeller.save();
             return res.status(201).json({

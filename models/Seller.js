@@ -27,14 +27,16 @@ const sellerSchema = mongoose.Schema(
         avatar:{
             type:String
         },
-        verified:{
-            type:Boolean,
-            default:false,
-        },
         products:[
             {
                 type:Schema.Types.ObjectId,
                 ref:"Product"
+            }
+        ],
+        orders:[
+            {
+                type:Schema.Types.ObjectId,
+                ref:"Order"
             }
         ]
     },{

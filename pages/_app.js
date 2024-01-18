@@ -7,10 +7,20 @@ import { useRouter } from "next/router.js";
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
+  const [isSeller, setIsSeller] = useState(false);
   const [cart, setCart] = useState({});
   const [subTotal, setSubTotal] = useState(0);
   const [charges, setCharges] = useState(0);
   const [key, setKey] = useState(null);
+
+  useEffect(()=>{
+    const paths = router.pathname.split("/");
+    if (paths.includes("seller")) {
+      setIsSeller(true);
+    }else{
+      setIsSeller(false);
+    }
+  },[router.query]);
 
   useEffect(() => {
     try {
@@ -86,7 +96,7 @@ export default function App({ Component, pageProps }) {
   
   return (
     <>
-      <Navbar logout={logout} key={key} cart={cart} />
+      {!isSeller && <Navbar isSeller={isSeller} logout={logout} key={key} cart={cart} />}
       <Component
         cart={cart}
         addToCart={addToCart}
@@ -95,7 +105,7 @@ export default function App({ Component, pageProps }) {
         charges={charges}
         {...pageProps}
       />
-      <Footer />
+      {!isSeller && <Footer />}
     </>
   );
 }
