@@ -4,15 +4,29 @@ import Footer from "../components/footer.js";
 import { useEffect, useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router.js";
+import Sidebar from "@/components/Sidebar/sidebar.js";
+import jwt from "jsonwebtoken";
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
   const [isSeller, setIsSeller] = useState(false);
+  const [sellerLogin,setSellerLogin] = useState(false);
   const [cart, setCart] = useState({});
   const [subTotal, setSubTotal] = useState(0);
   const [charges, setCharges] = useState(0);
   const [key, setKey] = useState(null);
 
+  useEffect(()=>{
+    const stoken = localStorage.getItem("stoken");
+    jwt.verify(stoken,process.env.NEXT_PUBLIC_JWT_SECRET,(err)=>{
+      if (err) {
+        setSellerLogin(false);
+      }else{
+        setSellerLogin(true);
+      }
+    })
+  },[router.query]);
+  
   useEffect(()=>{
     const paths = router.pathname.split("/");
     if (paths.includes("seller")) {
@@ -92,10 +106,16 @@ export default function App({ Component, pageProps }) {
       setKey(Math.random())
       router.push("/");
     }
+    if(localStorage.getItem("stoken")){
+      localStorage.removeItem("stoken");
+      setKey(Math.random())
+      router.push("/seller/login");
+    }
   }
   
   return (
     <>
+      {(sellerLogin && isSeller) && <Sidebar key={key} logout={logout}/> }
       {!isSeller && <Navbar isSeller={isSeller} logout={logout} key={key} cart={cart} />}
       <Component
         cart={cart}

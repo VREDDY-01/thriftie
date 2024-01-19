@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import jwt from "jsonwebtoken";
 import { useRouter } from "next/router";
+import SellerDashboard from "@/components/sellerDashboard.js/sellerDashboard";
 
 const Dashboard = () => {
-    const router = useRouter();
+  const router = useRouter();
   useEffect(() => {
     const stoken = localStorage.getItem("stoken");
     if (stoken) {
@@ -13,11 +14,16 @@ const Dashboard = () => {
           router.push("/seller/login");
         }
       });
-    }else{
-        router.push("/seller/login");
+    } else {
+      router.push("/seller/login");
     }
   }, [router.query]);
-  return <div>Dashboard</div>;
+  
+  return (
+    <>
+      <SellerDashboard/>
+    </>
+  );
 };
 
 export default Dashboard;
