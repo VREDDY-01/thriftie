@@ -34,7 +34,11 @@ const ProductSchema = new mongoose.Schema({
     availableQty: {
         type:String,
         required:true
-    },   
+    },
+    seller:{
+        type:Schema.Types.ObjectId,
+        ref:"Seller"
+    }   
 });
 
 mongoose.models = {};

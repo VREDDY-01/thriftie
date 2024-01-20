@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import jwt from "jsonwebtoken";
 
 const Login = () => {
   const router = useRouter();
@@ -10,10 +11,15 @@ const Login = () => {
   const [isUser, setIsUser] = useState(null);
 
   useEffect(()=>{
-    if (localStorage.getItem("stoken")) {
-      router.push("/seller/dashboard");
-    }
-  },[])
+    const token = localStorage.getItem("stoken");
+    jwt.verify(token,process.env.NEXT_PUBLIC_JWT_SECRET,(err)=>{
+      if (err) {
+        localStorage.removeItem("stoken");
+      }else{
+        router.push("/seller/dashboard");
+      }
+    })
+  },[]);
 
   const handleChange = (e) => {
     if (e.target.name == "email") {
