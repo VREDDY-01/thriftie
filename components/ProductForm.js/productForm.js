@@ -102,7 +102,7 @@ const ProductForm = ({ userId }) => {
       formData.append("upload_preset", "thriftie_preset");
       formData.append("public_id", `/products`);
 
-      const response = await axios.post("/api/seller/upload", formData, {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_HOST}/api/seller/upload`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
