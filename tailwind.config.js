@@ -21,6 +21,7 @@ module.exports = {
       },
       screens:{
         'smx': { 'raw': '(max-width: 765px)' },
+        'ssmx': { 'raw': '(max-width: 630px)' },
       },
     },
   },

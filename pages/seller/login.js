@@ -58,7 +58,7 @@ const Login = () => {
 
   return (
     <form
-      className="flex h-140 w-screen items-center overflow-hidden px-2"
+      className="flex justify-center h-140 w-screen items-center overflow-hidden px-2"
       method="POST"
       onSubmit={handleSubmit}
     >

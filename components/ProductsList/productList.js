@@ -19,7 +19,7 @@ const ProductList = ({ products }) => {
               >
                 <img
                   alt={products[prod].desc}
-                  className="h-[30vh] sm:h-[30vh] md:h-[30vh] lg:h-[36vh] block md:m-0 m-auto"
+                  className="h-[30vh] sm:h-[30vh] md:h-[30vh] lg:h-[36vh] block m-auto"
                   src={products[prod].img}
                 />
               </span>

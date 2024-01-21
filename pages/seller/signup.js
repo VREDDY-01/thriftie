@@ -86,7 +86,7 @@ const Signup = () => {
 
   return (
     <form
-      className="flex h-150 w-screen items-center overflow-hidden px-2"
+      className="flex h-150 justify-center w-screen items-center overflow-hidden px-2"
       method="POST"
       onSubmit={handleSubmit}
     >

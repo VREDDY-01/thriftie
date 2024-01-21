@@ -2,6 +2,14 @@ import Product from "@/models/Product";
 import connectDb from "@/middleware/mongoose";
 import Seller from "@/models/Seller";
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb',
+    },
+  },
+}
+
 const handler = async (req, res) => {
   if (req.method == "POST") {
     const { title, desc, img, category, sizes, color, price, avlQty, userId } =

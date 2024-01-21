@@ -11,6 +11,7 @@ const ProductForm = ({ userId }) => {
   const [color, setColor] = useState("");
   const [price, setPrice] = useState("");
   const [avlQty, setAvlQty] = useState("");
+  const [error, seterror] = useState(false);
 
   const handleChange = (e) => {
     if (e.target.name == "title") {
@@ -18,7 +19,15 @@ const ProductForm = ({ userId }) => {
     } else if (e.target.name == "desc") {
       setdesc(e.target.value);
     } else if (e.target.name == "img") {
-      setimg(e.target.value);
+      let reader = new FileReader();
+      reader.readAsDataURL(e.target.files[0]);
+      reader.onload = ()=>{
+        setimg(reader.result);
+      }
+      reader.onerror = err =>{
+        console.log("Error: ",err);
+        seterror(true);
+      }
     } else if (e.target.name == "category") {
       setCategory(e.target.value);
     } else if (e.target.name == "color") {
@@ -151,12 +160,12 @@ const ProductForm = ({ userId }) => {
                     </label>
                     <input
                       name="img"
-                      value={img}
                       onChange={handleChange}
                       className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                       aria-describedby="user_avatar_help"
                       id="user_avatar"
                       type="file"
+                      accept="image/*"
                       required
                     />
                     <div
@@ -165,6 +174,7 @@ const ProductForm = ({ userId }) => {
                     >
                       Please select the images in the format of .png,.jpeg.
                     </div>
+                    {error && <p className="text-red-700 text-sm">Please choose a supported image.</p>}
                   </div>
                   <div className="mb-5">
                     <label
