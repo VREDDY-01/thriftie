@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const ProductList = ({ products }) => {
   return (
-    <div className="container sm:px-0 py-5 md:px-20 md:py-24 mx-auto text-center">
+    <div className="container sm:px-0 py-0 md:px-1 md:py-6 mx-auto text-center">
       <div className="flex flex-wrap justify-evenly">
         {Object.keys(products).length == 0 && (
           <p>You Do not Have Any Products Right Now.</p>
@@ -12,24 +12,21 @@ const ProductList = ({ products }) => {
           return (
             <div
               key={products[prod]._id}
-              className="lg:w-1/2 xl:w-1/3 md:w-1/2 w-1/2 p-4 cursor-pointer sm:text-center md:text-left text-center"
+              className="xl:w-1/3 lg:w-1/2 md:w-full w-1/2 p-4 cursor-pointer sm:text-center md:text-left text-center"
             >
               <span
                 className="block relative rounded overflow-hidden"
               >
                 <img
                   alt={products[prod].desc}
-                  className="h-[30vh] sm:h-[30vh] md:h-[30vh] lg:h-[36vh] block m-auto"
+                  className="h-[20vh] sm:h-[30vh] md:h-[30vh] lg:h-[36vh] block m-auto"
                   src={products[prod].img}
                 />
               </span>
-              <div className="flex justify-between items-center">
+              <div className="flex justify-around items-center text-xs">
                 <div className="mt-4">
-                  <h3 className="md:text-gray-500 md:text-xs tracking-widest title-font mb-1">
-                    {products[prod].category}
-                  </h3>
                   <h2 className="md:text-gray-900 title-font md:text-lg font-medium">
-                    {products[prod].title}
+                    {products[prod].slug}
                   </h2>
                   <p className="mt-1 mr-2 inline-block">
                     ₹{products[prod].price}

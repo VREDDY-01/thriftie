@@ -1,17 +1,20 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import { BeatLoader } from "react-spinners";
 
 const ProductForm = ({ userId }) => {
   const [title, settitle] = useState("");
   const [desc, setdesc] = useState("");
-  const [img, setimg] = useState("");
+  const [imageFile, setImageFile] = useState(null);
   const [category, setCategory] = useState("TSHIRT");
   const [sizes, setSizes] = useState([]);
   const [color, setColor] = useState("");
   const [price, setPrice] = useState("");
   const [avlQty, setAvlQty] = useState("");
   const [error, seterror] = useState(false);
+  const [loading, setloading] = useState(false);
 
   const handleChange = (e) => {
     if (e.target.name == "title") {
@@ -19,15 +22,7 @@ const ProductForm = ({ userId }) => {
     } else if (e.target.name == "desc") {
       setdesc(e.target.value);
     } else if (e.target.name == "img") {
-      let reader = new FileReader();
-      reader.readAsDataURL(e.target.files[0]);
-      reader.onload = ()=>{
-        setimg(reader.result);
-      }
-      reader.onerror = err =>{
-        console.log("Error: ",err);
-        seterror(true);
-      }
+      setImageFile(e.target.files[0]);
     } else if (e.target.name == "category") {
       setCategory(e.target.value);
     } else if (e.target.name == "color") {
@@ -45,50 +40,84 @@ const ProductForm = ({ userId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const resBody = {
-      title,
-      desc,
-      img,
-      category,
-      sizes,
-      color:color.toLowerCase(),
-      price,
-      avlQty,
-      userId,
-    };
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_HOST}/api/seller/addProduct`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(resBody),
+    const addProduct = async (img) => {
+      const resBody = {
+        title,
+        desc,
+        img,
+        category,
+        sizes,
+        color: color.toLowerCase(),
+        price,
+        avlQty,
+        userId,
+      };
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_HOST}/api/seller/addProduct`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(resBody),
+        }
+      );
+      const a = await res.json();
+      if (res.status == "201") {
+        toast.success(a.message, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setloading(false);
+      } else {
+        toast.error(a.message, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setloading(false);
       }
-    );
-    const a = await res.json();
-    if (res.status == "201") {
-      toast.success(a.message, {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
+    };
+    setloading(true);
+    try {
+      if (!imageFile) {
+        console.error("Please choose an image to upload.");
+        seterror("Please Choose an Image File.");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("file", imageFile);
+      formData.append("upload_preset", "thriftie_preset");
+      formData.append("public_id", `/products`);
+
+      const response = await axios.post("/api/seller/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
-    } else {
-      toast.error(a.message, {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      if (response.status == "200") {
+        addProduct(response.data.secure_url);
+      } else {
+        console.log("Server error while uploading image.", response.error);
+        seterror(response.error);
+      }
+
+      // You can add additional logic here, such as updating state to display the uploaded image.
+    } catch (error) {
+      console.error("Error uploading image:", error.message);
+      seterror(error.message);
     }
   };
 
@@ -174,7 +203,11 @@ const ProductForm = ({ userId }) => {
                     >
                       Please select the images in the format of .png,.jpeg.
                     </div>
-                    {error && <p className="text-red-700 text-sm">Please choose a supported image.</p>}
+                    {error && (
+                      <p className="text-red-700 text-sm">
+                        Please choose a supported image.
+                      </p>
+                    )}
                   </div>
                   <div className="mb-5">
                     <label
@@ -278,10 +311,11 @@ const ProductForm = ({ userId }) => {
                     />
                   </div>
                   <button
+                    disabled={loading}
                     type="submit"
-                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    className="text-white bg-blue-700 disabled:bg-slate-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   >
-                    Submit
+                    {loading ? <BeatLoader color="#ffffff" size={10}/> : "Submit"}
                   </button>
                 </form>
               </div>

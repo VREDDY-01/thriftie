@@ -3,9 +3,11 @@ import Product from "@/models/Product";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import jwt from "jsonwebtoken";
+import { BeatLoader } from "react-spinners";
 
 const Products = () => {
   const [products, setproducts] = useState({});
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -21,6 +23,7 @@ const Products = () => {
 
   const getSelletProducts = async(sellerId)=>{
     const resBody = {sellerId};
+    setLoading(true);
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_HOST}/api/seller/getSellerProducts`,
       {
@@ -34,36 +37,37 @@ const Products = () => {
     const a = await res.json();
     if (res.status == "200") {
       let prods = a.products;
-        let finalProds = {};
-        for (let item of prods) {
-          if (item.title in finalProds) {
-            if (
-              !finalProds[item.title].color.includes(item.color) &&
-              item.availableQty > 0
-            ) {
-              finalProds[item.title].color.push(item.color);
-            }
-            if (
-              !finalProds[item.title].size.includes(item.size) &&
-              item.availableQty > 0
-            ) {
-              finalProds[item.title].size.push(item.size);
-            }
-          } else {
-            finalProds[item.title] = JSON.parse(JSON.stringify(item));
-            if (item.availableQty > 0) {
-              finalProds[item.title].color = [item.color];
-              finalProds[item.title].size = [item.size];
-            } else {
-              finalProds[item.title].color = [];
-              finalProds[item.title].size = [];
-            }
-          }
-        }
-        setproducts(finalProds);
+        // let finalProds = {};
+        // for (let item of prods) {
+        //   if (item.title in finalProds) {
+        //     if (
+        //       !finalProds[item.title].color.includes(item.color) &&
+        //       item.availableQty > 0
+        //     ) {
+        //       finalProds[item.title].color.push(item.color);
+        //     }
+        //     if (
+        //       !finalProds[item.title].size.includes(item.size) &&
+        //       item.availableQty > 0
+        //     ) {
+        //       finalProds[item.title].size.push(item.size);
+        //     }
+        //   } else {
+        //     finalProds[item.title] = JSON.parse(JSON.stringify(item));
+        //     if (item.availableQty > 0) {
+        //       finalProds[item.title].color = [item.color];
+        //       finalProds[item.title].size = [item.size];
+        //     } else {
+        //       finalProds[item.title].color = [];
+        //       finalProds[item.title].size = [];
+        //     }
+        //   }
+        // }
+        setproducts(prods);
     }else{
       setproducts({});
     };
+    setLoading(false);
   };
 
   return (
@@ -73,7 +77,7 @@ const Products = () => {
           <p className="text-l md:text-3xl text-gray-950 dark:text-gray-900 my-3">
             All Products
           </p>
-          <ProductList products={products} />
+          {loading?<BeatLoader className="py-7"/>:<ProductList products={products} />}
         </div>
       </div>
     </div>
