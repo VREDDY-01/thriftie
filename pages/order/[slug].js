@@ -22,6 +22,13 @@ const MyOrder = ({ order }) => {
     });
   }, [router.query]);
 
+  const bgColor = {
+    "success":"green",
+    "initiated":"yellow",
+    "pending":"yellow",
+    "cancelled":"red"
+  }
+
   return (
     <>
       {verified && (
@@ -39,9 +46,7 @@ const MyOrder = ({ order }) => {
             </div>
             <div className="flex items-center">
               <p
-                className={`text-white p-3 text-center bg-${
-                  order.status != "Success" ? "red" : "green"
-                }-400 p-1 rounded-full`}
+                className={`text-white p-3 text-center bg-${bgColor[order.status.toLowerCase()]}-400 p-1 rounded-full`}
               >
                 {order.status}
               </p>

@@ -62,7 +62,7 @@ const NewArrival = () => {
       </div>
       <div className="container sm:px-0 py-5 md:px-20 md:py-24 mx-auto text-center">
         <div className="flex flex-wrap justify-center">
-          {Object.keys(products).map((prod) => {
+          {Object.keys(products).reverse().map((prod) => {
             return (
               <div
                 key={products[prod]._id}

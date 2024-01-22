@@ -7,8 +7,8 @@ const OrderedProductSchema = mongoose.Schema(
       require: true,
     },
     product: {
-      type: Schema.Types.ObjectId,
-      ref: "Product",
+      type: Object,
+      require:true
     },
     email: {
       type: String,

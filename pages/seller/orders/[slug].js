@@ -9,6 +9,7 @@ import OrderedProduct from "@/models/OrderedProduct";
 import Product from "@/models/Product";
 
 const MyOrder = ({ order, ordProduct }) => {
+  console.log(ordProduct);
   const router = useRouter();
   const [verified, setVerified] = useState(true);
   const [status, setstatus] = useState("Pending");
@@ -114,8 +115,10 @@ const MyOrder = ({ order, ordProduct }) => {
                           onChange={(e) => setstatus(e.target.value)}
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         >
+                          <option value="Initiated">Initiated</option>
                           <option value="Pending">Pending</option>
                           <option value="Success">Success</option>
+                          <option value="Cancelled">Cancelled</option>
                         </select>
                       </div>
                       <button
@@ -269,15 +272,10 @@ export async function getServerSideProps(context) {
   }
 
   const foundOrder = await OrderedProduct.find({ _id: context.query.slug });
-  
-  const foundProduct = await Product.findById(foundOrder[0].product);
-  if (!foundOrder || !foundProduct) {
-    return
-  }
   return {
     props: {
       order: JSON.parse(JSON.stringify(foundOrder))[0],
-      ordProduct: JSON.parse(JSON.stringify(foundProduct)),
+      ordProduct: JSON.parse(JSON.stringify(foundOrder[0].product)),
     },
   };
 }

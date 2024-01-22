@@ -2,10 +2,16 @@ import Link from "next/link";
 import React, { useEffect } from "react";
 
 const OrderedProduct = ({ orders }) => {
+  const bgColor = {
+    "success":"green",
+    "initiated":"yellow",
+    "pending":"yellow",
+    "cancelled":"red"
+  }
   return (
     <>
       {orders.length > 0 ? (
-        <div className="bg-white p-0 md:p-8 rounded-md w-full">
+        <div className="bg-white p-0 md:p-4 rounded-md w-full">
           {/* <div className=" flex items-center justify-between pb-6">
         <div className="flex items-center justify-between">
           <div className="flex bg-white items-center p-2 rounded-md">
@@ -84,7 +90,7 @@ const OrderedProduct = ({ orders }) => {
                               <p className="text-gray-900 text-center">
                                 {new Date(
                                   order.ordElement.createdAt
-                                ).toLocaleDateString("hi-In")}
+                                ).toLocaleString("hi-In")}
                               </p>
                             </Link>
                           </td>
@@ -103,11 +109,7 @@ const OrderedProduct = ({ orders }) => {
                               href={`/seller/orders/${order.ordElement._id}`}
                             >
                               <p
-                                className={`text-gray-900 text-center bg-${
-                                  order.ordElement.status == "Pending"
-                                    ? "red"
-                                    : "green"
-                                }-400 p-1 rounded-full`}
+                                className={`text-gray-900 text-center bg-${bgColor[order.ordElement.status.toLowerCase()]}-400 p-1 rounded-full`}
                               >
                                 {order.ordElement.status}
                               </p>

@@ -58,7 +58,7 @@ const handler = async (req, res) => {
       foundProduct = await Product.findOne({ slug: item });
       const newOrderedP = new OrderedProduct({
         order_id: req.body.oid,
-        product: foundProduct._id,
+        product: foundProduct,
         email: req.body.email,
         address: req.body.finalAddress,
         qty: req.body.cart[item].qty,

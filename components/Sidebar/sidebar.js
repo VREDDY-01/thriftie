@@ -43,7 +43,6 @@ const Sidebar = ({ logout }) => {
                 <img src="/logo.png" className="h-8 me-3" alt="Thriftie Logo" />
               </Link>
             </div>
-            <Dropdown logout={logout} />
           </div>
         </div>
       </nav>

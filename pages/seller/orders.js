@@ -39,7 +39,7 @@ const Orders = () => {
     const a = await res.json();
     if (res.status == "200") {
       let ords = a.orders;
-      setOrders(ords);
+      setOrders(ords.reverse());
     } else {
       setOrders([]);
     }
