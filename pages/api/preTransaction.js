@@ -2,11 +2,13 @@ import Order from "@/models/Order";
 import connectDb from "@/middleware/mongoose";
 import Product from "@/models/Product";
 import pincodes from "../../sampleData/pincodes.json";
+import Seller from "@/models/Seller";
+import OrderedProduct from "@/models/OrderedProduct";
 
 const handler = async (req, res) => {
   if (req.method == "POST") {
     //Check if cart is tampered
-    if(!Object.keys(pincodes).includes(req.body.pincode)){
+    if (!Object.keys(pincodes).includes(req.body.pincode)) {
       res.status(202).json({
         message: "The Pincode is not Serviceable!",
       });
@@ -19,10 +21,10 @@ const handler = async (req, res) => {
       product = await Product.findOne({ slug: item });
       if (product.availableQty < req.body.cart[item].qty) {
         let msg;
-        if(product.availableQty == 0){
-          msg = `${product.slug} Out Of stock!`
-        }else{
-          msg = `Sorry, Only ${product.availableQty} ${product.slug} ${product.category} instock.`
+        if (product.availableQty == 0) {
+          msg = `${product.slug} Out Of stock!`;
+        } else {
+          msg = `Sorry, Only ${product.availableQty} ${product.slug} ${product.category} instock.`;
         }
         res.status(202).json({
           message: msg,
@@ -54,6 +56,19 @@ const handler = async (req, res) => {
     let foundProduct;
     for (let item in req.body.cart) {
       foundProduct = await Product.findOne({ slug: item });
+      const newOrderedP = new OrderedProduct({
+        order_id: req.body.oid,
+        product: foundProduct._id,
+        email: req.body.email,
+        address: req.body.finalAddress,
+        qty: req.body.cart[item].qty,
+        amount: foundProduct.price * req.body.cart[item].qty,
+      });
+      await newOrderedP.save();
+      await Seller.findByIdAndUpdate(foundProduct.seller, {
+        $push: { orders: newOrderedP },
+      });
+
       const filter = { slug: item };
       const updates = {
         availableQty: foundProduct.availableQty - req.body.cart[item].qty,

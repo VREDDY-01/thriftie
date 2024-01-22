@@ -36,7 +36,7 @@ const sellerSchema = mongoose.Schema(
         orders:[
             {
                 type:Schema.Types.ObjectId,
-                ref:"Order"
+                ref:"OrderedProduct"
             }
         ]
     },{

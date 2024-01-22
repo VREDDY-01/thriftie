@@ -26,13 +26,26 @@ const MyOrder = ({ order }) => {
     <>
       {verified && (
         <div className="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
-          <div className="flex justify-start item-start space-y-2 flex-col">
-            <h1 className="text-3xl dark:text-white lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800">
-              Order #{order.order_id}
-            </h1>
-            <p className="text-base dark:text-gray-300 font-medium leading-6 text-gray-600">
-              {new Date(order.createdAt).toLocaleDateString("hi-In") +" - " + new Date(order.createdAt).toLocaleTimeString("hi-In")}
-            </p>
+          <div className="flex justify-between flex-col md:flex-row items-center">
+            <div className="flex justify-start item-start space-y-2 flex-col">
+              <h1 className="text-3xl dark:text-white lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800">
+                Order #{order.order_id}
+              </h1>
+              <p className="text-base dark:text-gray-300 font-medium leading-6 text-gray-600">
+                {new Date(order.createdAt).toLocaleDateString("hi-In") +
+                  " - " +
+                  new Date(order.createdAt).toLocaleTimeString("hi-In")}
+              </p>
+            </div>
+            <div className="flex items-center">
+              <p
+                className={`text-white p-3 text-center bg-${
+                  order.status != "Success" ? "red" : "green"
+                }-400 p-1 rounded-full`}
+              >
+                {order.status}
+              </p>
+            </div>
           </div>
 
           <div className="mt-10 flex flex-col xl:flex-row jusitfy-center items-stretch w-full xl:space-x-8 space-y-4 md:space-y-6 xl:space-y-0">
@@ -87,7 +100,7 @@ const MyOrder = ({ order }) => {
                             {products[k].qty}
                           </p>
                           <p className="text-base dark:text-white xl:text-lg font-semibold leading-6 text-gray-800">
-                            ₹{products[k].price*products[k].qty}.00
+                            ₹{products[k].price * products[k].qty}.00
                           </p>
                         </div>
                       </div>
@@ -186,8 +199,8 @@ export async function getServerSideProps(context) {
   if (!mongoose.connections[0].readyState) {
     await mongoose.connect(process.env.MONGO_URI);
   }
-  
-  const foundOrder = await Order.find({order_id:context.query.slug});
+
+  const foundOrder = await Order.find({ order_id: context.query.slug });
 
   return {
     props: { order: JSON.parse(JSON.stringify(foundOrder))[0] },

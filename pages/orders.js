@@ -36,9 +36,9 @@ const Orders = () => {
           setVerified(true);
         }
       });
-    }else{
+    } else {
       setVerified(false);
-      router.push("/")
+      router.push("/");
     }
   }, [router.query]);
 
@@ -51,92 +51,118 @@ const Orders = () => {
 
   return (
     <>
-    {verified && <div className="min-h-screen">
-      <h1 className="text-2xl font-semiboldbold text-center p-8">My Orders</h1>
-      <div className="container mx-auto ">
-        <div className="flex flex-col">
-          <div className="overflow-x-auto mx-0 min-w-fit lg:-mx-8">
-            <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-              <div className="overflow-visible">
-                <table className=" md:min-w-full  text-left text-sm font-light">
-                  <thead className="border-b font-medium dark:border-neutral-500">
-                    <tr>
-                      <th
-                        scope="col"
-                        className="px-4 md:text-sm text-xs w-1/5 text-center py-4"
-                      >
-                        #Order Id
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-4 md:text-sm text-xs  text-center py-4"
-                      >
-                        Items
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-4  md:text-sm text-xs text-center py-4"
-                      >
-                        Price
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-4  md:text-sm text-xs text-center py-4"
-                      >
-                        Purchased on
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-4  md:text-sm text-xs text-center py-4"
-                      >
-                        Details
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {orders.map((order) => {
-                      return (
-                        <tr
-                          key={order.order_id}
-                          className="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600"
-                        >
-                          <td className="whitespace-nowrap  md:text-sm text-xs text-center md:p-4 p-1 font-medium">
-                            #Oid-{order.order_id}
-                          </td>
-                          <td className="whitespace-normal md:text-sm text-xs text-justify md:max-w-[15vw] p-1 md:p-4">
-                            <div
-                              className=" text-center max-w-[30vw]"
-                              style={style}
-                            >
-                              {Object.keys(order.products).length}
-                            </div>
-                          </td>
-                          <td className="whitespace-nowrap md:text-sm text-xs text-center md:p-4 p-1">
-                            ₹{order.amount}.0
-                          </td>
-                          <td className="whitespace-nowrap md:text-sm text-xs text-center p-1 md:p-4">
-                            {new Date(order.createdAt).toLocaleDateString("hi-In") +" - " + new Date(order.createdAt).toLocaleTimeString("hi-In")}
-                          </td>
-                          <td className="whitespace-nowrap md:text-sm text-xs text-center p-1 md:p-4">
-                            <Link href={`/order/${order.order_id}`}>
-                              <button className="flex m-auto  text-white bg-orange-500 border-0 py-1 px-1 md:px-2 md:text-md text-xs md:font-semibold focus:outline-none hover:bg-orange-600 rounded">
-                                View Details
-                              </button>
-                            </Link>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+      {verified && (
+        <div className="min-h-screen">
+          <h1 className="text-2xl font-semiboldbold text-center p-8">
+            My Orders
+          </h1>
+          <div className="container mx-auto ">
+            <div className="">
+              <div className="px-4 sm:px-8 py-4 overflow-x-auto">
+                <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
+                  <table className="min-w-full leading-normal">
+                    <thead>
+                      <tr>
+                        <th className="md:px-5 px-0 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          Order#
+                        </th>
+                        <th className="md:px-5 px-0 lg:block hidden py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          Items
+                        </th>
+                        <th className="md:px-5 px-0 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          Price
+                        </th>
+
+                        <th className="md:px-5 px-0 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          Purchased On
+                        </th>
+                        <th className="md:px-5 px-0 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          Status
+                        </th>
+                        <th className="md:px-5 lmx:hidden px-0 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          Details
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {orders.map((order) => {
+                        return (
+                          <tr key={order.order_id}>
+                            <td className="md:px-5 px-0 py-5 border-b text-center border-gray-200 bg-white text-sm">
+                              <Link
+                                href={`/seller/orders/${order.order_id}`}
+                              >
+                                <p className="text-gray-900 text-center">
+                                  {order.order_id}
+                                </p>
+                              </Link>
+                            </td>
+                            <td className="md:px-5 px-0 py-5 border-b lmx:hidden border-gray-200 bg-white text-sm">
+                              <Link
+                                href={`/seller/orders/${order.order_id}`}
+                              >
+                                <p className="text-gray-900 text-center">
+                                  {Object.keys(order.products).length}
+                                </p>
+                              </Link>
+                            </td>
+                            <td className="md:px-5 px-0 py-5 border-b border-gray-200 bg-white text-sm">
+                              <Link
+                                href={`/seller/orders/${order.order_id}`}
+                              >
+                                <p className="text-gray-900 text-center">
+                                  {new Date(order.createdAt).toLocaleDateString(
+                                    "hi-In"
+                                  )}
+                                </p>
+                              </Link>
+                            </td>
+
+                            <td className="md:px-5 px-0 py-5 border-b border-gray-200 bg-white text-sm">
+                              <Link
+                                href={`/seller/orders/${order.order_id}`}
+                              >
+                                <p className="text-gray-900 text-center">
+                                  ₹ {order.amount}
+                                </p>
+                              </Link>
+                            </td>
+                            <td className="md:px-5 px-0 py-5 border-b border-gray-200 bg-white text-sm">
+                              <Link
+                                href={`/seller/orders/${order.order_id}`}
+                              >
+                                <p
+                                  className={`text-gray-900 text-center bg-${
+                                    order.status == "Pending"
+                                      ? "red"
+                                      : "green"
+                                  }-400 p-1 rounded-full`}
+                                >
+                                  {order.status}
+                                </p>
+                              </Link>
+                            </td>
+                            <td className="whitespace-nowrap md:text-sm lmx:hidden text-xs text-center p-1 md:p-4">
+                              <Link href={`/order/${order.order_id}`}>
+                                <button className="flex m-auto  text-white bg-orange-500 border-0 py-1 px-1 md:px-2 md:text-md text-xs md:font-semibold focus:outline-none hover:bg-orange-600 rounded">
+                                  View Details
+                                </button>
+                              </Link>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>}
+      )}
     </>
   );
 };
+
 
 export default Orders;
