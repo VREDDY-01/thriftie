@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import jwt from "jsonwebtoken";
+import { BeatLoader } from "react-spinners";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
-  const [verified, setVerified] = useState(false);
   const router = useRouter();
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
+    setLoading(true);
     const getUsers = async (decoded) => {
       const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/myorders`, {
         method: "POST",
@@ -24,21 +25,20 @@ const Orders = () => {
         setOrders([]);
         router.push("/login");
       }
+      setLoading(false);
     };
     const token = localStorage.getItem("token");
     if (token) {
       jwt.verify(token, process.env.NEXT_PUBLIC_JWT_SECRET, (err, decoded) => {
         if (err) {
           localStorage.removeItem("token");
-          router.push("/");
+          router.push("/login");
         } else {
           getUsers(decoded);
-          setVerified(true);
         }
       });
     } else {
-      setVerified(false);
-      router.push("/");
+      router.push("/login");
     }
   }, [router.query]);
 
@@ -50,7 +50,9 @@ const Orders = () => {
   };
   return (
     <>
-      {verified && (
+      {loading ? (
+        <BeatLoader className="text-center items-center my-28" />
+      ) : (
         <div className="min-h-screen">
           <h1 className="text-2xl font-semiboldbold text-center p-8">
             My Orders
@@ -61,7 +63,10 @@ const Orders = () => {
                 <p className="text-center py-5 ">
                   You donot have any orders right now.Happy Shopping!
                 </p>
-                <Link href={"/"} className="items-center justify-center text-white bg-blue-700 disabled:bg-slate-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <Link
+                  href={"/"}
+                  className="items-center justify-center text-white bg-blue-700 disabled:bg-slate-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
                   Start Shopping!
                 </Link>
               </div>

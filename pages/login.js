@@ -48,6 +48,8 @@ const Login = () => {
       setPassword("");
     }else{
       setIsUser(false)
+      setEmail("");
+      setPassword("");
     }
   };
 
