@@ -11,7 +11,7 @@ const Category = () => {
               <div className="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
                 <img
                   className="lg:h-96 md:h-36 w-full object-cover object-center"
-                  src="https://www.mydesignation.com/wp-content/uploads/2019/08/malayali-tshirt-mydesignation-mockup-image-latest-golden-.jpg"
+                  src="https://5.imimg.com/data5/SELLER/Default/2023/4/302455745/DP/TX/KQ/7633002/terry-cotton-oversized-t-shirts-500x500.jpg"
                   alt="blog"
                 />
                 <div className="p-1 text-center flex flex-col">
@@ -25,7 +25,7 @@ const Category = () => {
               <div className="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
                 <img
                   className="lg:h-96 md:h-36 w-full object-cover object-center"
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLAfNDlvyEqQQua4z_qmZUO12ODU36hzaZ3Q&usqp=CAU"
+                  src="https://static.aceomni.cmsaceturtle.com/prod/product-image/aceomni/Wrangler/Monobrand/WMJN006864/WMJN006864_1.jpg"
                   alt="blog"
                 />
                 <div className="p-1 text-center flex flex-col">
